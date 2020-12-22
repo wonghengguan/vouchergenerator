@@ -15,8 +15,12 @@ public class RecipientImpl implements RecipientService {
     RecipientRepo recipientRepo;
 
     @Override
-    public Recipient getRecipientByEmail(String email) {
-        return recipientRepo.getRecipientByEmail(email);
+    public Long getRecipientByEmail(String email) {
+        Recipient recipient = recipientRepo.getRecipientByEmail(email);
+        if(recipient!=null) {
+            return recipient.getId();
+        }
+        return null;
     }
 
     @Override
@@ -33,5 +37,10 @@ public class RecipientImpl implements RecipientService {
         form.setExists(exists);
 
         return form;
+    }
+
+    @Override
+    public Recipient getRecipientByID(Long id) {
+        return recipientRepo.getOne(id);
     }
 }

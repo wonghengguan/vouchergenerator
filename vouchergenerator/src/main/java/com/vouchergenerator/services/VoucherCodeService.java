@@ -9,5 +9,7 @@ public interface VoucherCodeService {
     void generateVoucherCode(VoucherCodeForm form);
     List<VoucherCode> getVoucherCodeListByRecipientID(Long recipientID);
     List<VoucherCode> getVoucherCodeListBySpecialOfferID(Long specialOfferID);
-    void useVoucherCode(VoucherCodeForm form);
+    List<VoucherCode> useVoucherCode(VoucherCodeForm form);
+    Boolean checkIsVoucherCodeExpired(Long voucherCodeID);
+    Boolean checkIsVoucherCodeUsed(Long voucherCodeID);
 }

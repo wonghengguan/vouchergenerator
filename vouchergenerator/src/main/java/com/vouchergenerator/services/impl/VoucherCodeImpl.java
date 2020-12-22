@@ -36,7 +36,7 @@ public class VoucherCodeImpl implements VoucherCodeService {
         if(recipient!=null && specialOffer!=null) {
             int voucherCodeLength = 8;
             char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(voucherCodeLength);
             Random random = new SecureRandom();
             for (int i = 0; i < voucherCodeLength; i++) {
                 char c = chars[random.nextInt(chars.length)];
@@ -65,7 +65,7 @@ public class VoucherCodeImpl implements VoucherCodeService {
     }
 
     @Override
-    public void useVoucherCode(VoucherCodeForm form) {
+    public List<VoucherCode> useVoucherCode(VoucherCodeForm form) {
         VoucherCode voucherCode = voucherCodeRepo.getOne(form.getId());
         Date today = new Date();
         if(!voucherCode.getUsed() && today.before(voucherCode.getExpirationDate())) {
@@ -73,5 +73,25 @@ public class VoucherCodeImpl implements VoucherCodeService {
             voucherCode.setUsedDate(today);
             voucherCodeRepo.save(voucherCode);
         }
+        return this.getVoucherCodeListByRecipientID(form.getRecipientID());
+    }
+
+    @Override
+    public Boolean checkIsVoucherCodeExpired(Long voucherCodeID) {
+        VoucherCode voucherCode = voucherCodeRepo.getOne(voucherCodeID);
+        if(voucherCode!=null) {
+            Date today = new Date();
+            return voucherCode.getExpirationDate().after(today);
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean checkIsVoucherCodeUsed(Long voucherCodeID) {
+        VoucherCode voucherCode = voucherCodeRepo.getOne(voucherCodeID);
+        if(voucherCode!=null) {
+            return voucherCode.getUsed();
+        }
+        return false;
     }
 }

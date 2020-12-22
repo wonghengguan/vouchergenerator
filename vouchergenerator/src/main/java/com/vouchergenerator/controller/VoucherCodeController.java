@@ -42,4 +42,15 @@ public class VoucherCodeController {
 
         return null;
     }
+
+    @RequestMapping(value="/useVoucherCode", method = RequestMethod.POST)
+    public List<VoucherCode> useVoucherCode(@RequestBody VoucherCodeForm form) {
+        List<VoucherCode> voucherCodeList = voucherCodeService.useVoucherCode(form);
+
+        if(voucherCodeList!=null && voucherCodeList.size()>0) {
+            return voucherCodeList;
+        }
+
+        return null;
+    }
 }
