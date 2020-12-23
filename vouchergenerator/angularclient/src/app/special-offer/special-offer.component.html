@@ -1,0 +1,68 @@
+<section>
+  <div class="row text-left">
+    <div class="col-sm-12">
+      <div class="card-header pb-2">
+        <h4 class="card-title">Special offer list</h4>
+      </div>
+      <div *ngIf="isNew" class="col-12 mt-4">
+        <span style="font-size: 13px">Name</span>
+        <input type="text" class="form-control" name="name" id="name" placeholder="Please enter special offer name" [(ngModel)]="name" required>
+      </div>
+
+      <div *ngIf="isNew" class="col-12 mt-4">
+        <span style="font-size: 13px">Discount</span>
+        <input type="number" class="form-control" name="discountPercentage" id="discountPercentage" placeholder="Please enter discount" [(ngModel)]="discountPercentage" required>
+      </div>
+      <div *ngIf="!isNew" class="card-content">
+        <div class="card-body">
+          <form>
+            <div *ngIf="specialOfferList!=null"  class="table-responsive">
+              <table class="table table-striped" border="1px solid black">
+                <thead>
+                <tr>
+                  <th scope="col" class="primary lighten-2">No</th>
+                  <th scope="col" class="primary lighten-2">Name</th>
+                  <th scope="col" class="primary lighten-2">Discount</th>
+                  <th><button class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;" type="button" (click)="generateAll()">
+                    <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Generate all</a></button>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let specialOffer of specialOfferList;let row = index" style="cursor: pointer;">
+                  <td>{{row+1}}</td>
+                  <td scope="row">{{specialOffer.name}}</td>
+                  <td>{{specialOffer.discountPercentage}}%</td>
+
+                  <td><button class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;" type="button" (click)="generateVoucherCode(specialOffer.id)">
+                    <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Generate voucher</a></button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <h4 *ngIf="specialOfferList==null" class="card-title">{{errormsg}}</h4>
+          </form>
+        </div>
+      </div>
+      <div class="col-12 mt-1" *ngIf="voucherGeneratedMsg">
+        <span class="display-block text-success" style="font-size: 11px">{{voucherGeneratedMsg}}</span>
+      </div>
+
+      <div class="col-12 mt-5">
+        <button *ngIf="!isNew && canCreate" class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;"  (click)="new()">
+          <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Add special offer</a></button>
+      </div>
+
+      <div class="col-12 mt-5">
+        <button *ngIf="isNew && canCreate" class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;"  (click)="newSpecialOffer()">
+          <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Submit special offer</a></button>
+      </div>
+      <div class="col-12 mt-5">
+        <button class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;"  (click)="logout()">
+          <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Logout</a></button>
+      </div>
+    </div>
+
+  </div>
+</section>
