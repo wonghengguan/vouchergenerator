@@ -26,6 +26,8 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.errorMsg = "";
+    this.registrationErrorMsg = "";
+    this.successMsg = "";
 
     if (this.email == undefined || this.email == '') {
       this.errorMsg = 'please enter email.';
@@ -54,6 +56,7 @@ export class LoginComponent implements OnInit {
     this.isRegister = true;
     this.registrationErrorMsg = "";
     this.successMsg = "";
+    this.errorMsg = "";
   }
 
   submitRegistration() {

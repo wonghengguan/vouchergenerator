@@ -33,6 +33,8 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.redeem = false;
     this.voucherCodeSuccessMsg = "";
+    this.voucherCodeFailMsg = "";
+    this.errormsg = "";
     this.getRecipient();
     this.getValidVoucherForRecipient();
     this.getExpiredVoucherForRecipient();
@@ -102,11 +104,10 @@ export class HomeComponent implements OnInit {
     this.voucherCode="";
     this.voucherCodeSuccessMsg="";
     this.voucherCodeFailMsg="";
+    this.errormsg = ""
   }
 
   submitVoucherCode() {
-    console.log("code = "  +this.voucherCode)
-    console.log("email = " + this.email)
     let voucherCodeForm = {
       code:this.voucherCode,
       email:this.email

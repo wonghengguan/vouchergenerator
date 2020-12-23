@@ -9,11 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 public interface VoucherCodeRepo extends JpaRepository<VoucherCode, Long> {
-    @Query("select vc from VoucherCode vc "
-            + "where vc.recipient.id = :recipientID")
-    List<VoucherCode> getVoucherCodeByRecipient(
-            @Param("recipientID") Long recipientID
-    );
 
     @Query("select vc from VoucherCode vc "
             + "where vc.specialOffer.id = :specialOfferID")
@@ -66,4 +61,7 @@ public interface VoucherCodeRepo extends JpaRepository<VoucherCode, Long> {
             @Param("email") String email,
             @Param("specialOfferID") Long specialOfferID
     );
+
+    @Query("select vc.code from VoucherCode vc ")
+    List<String> getAllCode();
 }

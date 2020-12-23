@@ -84,6 +84,7 @@
       <div *ngIf="redeem" class="col-12 mt-4">
         <span style="font-size: 13px">Code</span>
         <input type="text" class="form-control" name="vouchercode" id="vouchercode" placeholder="Please enter voucher code" [(ngModel)]="voucherCode" required>
+        <span class="display-block text-danger" style="font-size: 11px">Case sensitive</span>
       </div>
 
       <div class="col-12 mt-1" *ngIf="voucherCodeSuccessMsg">

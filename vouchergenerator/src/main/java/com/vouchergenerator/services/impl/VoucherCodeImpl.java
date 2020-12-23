@@ -44,20 +44,28 @@ public class VoucherCodeImpl implements VoucherCodeService {
     @Override
     public List<VoucherCode> generateVoucherCode(List<SpecialOffer> specialOffers, List<Recipient> recipients) throws ParseException {
         int voucherCodeLength = 8;
-        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
-
+        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz".toCharArray();
+        String voucherCodeString="";
         List<VoucherCode> voucherCodeList = new ArrayList<>();
+        List<String> allCodeString = voucherCodeRepo.getAllCode();
+
         for(SpecialOffer specialOffer:specialOffers) {
             for(Recipient recipient:recipients) {
                 if (specialOffer != null) {
                     VoucherCode voucherCode = voucherCodeRepo.getVoucherCodeByRecipientEmailAndSpecialOfferID(recipient.getEmail(), specialOffer.getId());
                     if(voucherCode==null) {
-                        StringBuilder sb = new StringBuilder(voucherCodeLength);
-                        Random random = new SecureRandom();
-                        for (int i = 0; i < voucherCodeLength; i++) {
-                            char c = chars[random.nextInt(chars.length)];
-                            sb.append(c);
-                        }
+                        Boolean isUnique;
+                        do {
+                            StringBuilder sb = new StringBuilder(voucherCodeLength);
+                            Random random = new SecureRandom();
+                            for (int i = 0; i < voucherCodeLength; i++) {
+                                char c = chars[random.nextInt(chars.length)];
+                                sb.append(c);
+                            }
+                            voucherCodeString = sb.toString();
+                            // make sure code is unique
+                            isUnique = !allCodeString.stream().anyMatch(voucherCodeString::contains);
+                        }while(!isUnique);
 
                         Calendar calendar = Calendar.getInstance();
                         calendar.add(Calendar.MONTH, 3);
@@ -65,7 +73,6 @@ public class VoucherCodeImpl implements VoucherCodeService {
                         Date expirationDate = calendar.getTime();
                         expirationDate = formatter.parse(formatter.format(expirationDate));
 
-                        String voucherCodeString = sb.toString();
                         voucherCode = new VoucherCode();
                         voucherCode.setCode(voucherCodeString);
                         voucherCode.setExpirationDate(expirationDate);
