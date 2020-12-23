@@ -26,7 +26,11 @@ export class VoucherCodeService {
     return this.apiService.post("api/voucherCode/useVoucherCode", body);
   }
 
+  generateAll(body: Object) {
+    return this.apiService.post("api/voucherCode/generateAll", body);
+  }
+
   generateVoucherCode(body: Object) {
-    return this.apiService.post("api/voucherCode/generateVoucherCode", body);
+    return this.apiService.post("api/voucherCode/generateVoucherCodeForSpecialOffer", body);
   }
 }

@@ -23,6 +23,9 @@
                   <th scope="col" class="primary lighten-2">No</th>
                   <th scope="col" class="primary lighten-2">Name</th>
                   <th scope="col" class="primary lighten-2">Discount</th>
+                  <th><button class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;" type="button" (click)="generateAll()">
+                    <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Generate all</a></button>
+                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -42,10 +45,15 @@
           </form>
         </div>
       </div>
+      <div class="col-12 mt-1" *ngIf="voucherGeneratedMsg">
+        <span class="display-block text-success" style="font-size: 11px">{{voucherGeneratedMsg}}</span>
+      </div>
+
       <div class="col-12 mt-5">
         <button *ngIf="!isNew && canCreate" class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;"  (click)="new()">
           <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Add special offer</a></button>
       </div>
+
       <div class="col-12 mt-5">
         <button *ngIf="isNew && canCreate" class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;"  (click)="newSpecialOffer()">
           <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Submit special offer</a></button>

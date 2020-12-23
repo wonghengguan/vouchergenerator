@@ -19,6 +19,8 @@ export class SpecialOfferComponent implements OnInit {
   public errormsg:any;
   public isNew:any;
   public canCreate:any;
+  public voucherGeneratedMsg:any;
+  public voucherCodeForm:any;
 
   constructor(private titleService: Title,
               private cookieService: CookieService,
@@ -31,6 +33,7 @@ export class SpecialOfferComponent implements OnInit {
     this.getSpecialOfferList();
     this.isNew = false;
     this.canCreate = this.recipientEmail=="admin";
+    this.voucherGeneratedMsg=""
   }
 
   getSpecialOfferList() {
@@ -63,6 +66,26 @@ export class SpecialOfferComponent implements OnInit {
     this.isNew = false;
   }
 
+  generateAll() {
+    let form ={
+    }
+    this.voucherCodeService.generateAll(form).subscribe( res=> {
+        if(res!=null) {
+          this.voucherCodeForm = res;
+          if(this.voucherCodeForm.generateSuccess) {
+            this.voucherGeneratedMsg = "Voucher is generated for special offer :"
+            for(let i=0; i<this.voucherCodeForm.specialOffers.length; i++) {
+              this.voucherGeneratedMsg = this.voucherGeneratedMsg.toString() + " " + (i+1) + ". " + this.voucherCodeForm.specialOffers[i].name;
+            }
+          }
+          else {
+            this.voucherGeneratedMsg="Something went wrong!"
+          }
+        }
+      }
+    )
+  }
+
   generateVoucherCode(specialOfferID: any) {
 
     let form ={
@@ -71,9 +94,16 @@ export class SpecialOfferComponent implements OnInit {
     }
     this.voucherCodeService.generateVoucherCode(form).subscribe( res=> {
           if(res!=null) {
-            this.specialOfferList = res;
-          } else {
-
+            this.voucherCodeForm = res;
+            if(this.voucherCodeForm.generateSuccess) {
+              this.voucherGeneratedMsg = "Voucher is generated for special offer :"
+              for(let i=0; i<this.voucherCodeForm.specialOffers.length; i++) {
+                this.voucherGeneratedMsg =  this.voucherGeneratedMsg.toString() + " " + (i+1) + ". " + this.voucherCodeForm.specialOffers[i].name;
+              }
+            }
+            else {
+              this.voucherGeneratedMsg="Something went wrong!"
+            }
           }
       }
     )

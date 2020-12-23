@@ -17,9 +17,14 @@ public class VoucherCodeController {
     @Autowired
     VoucherCodeService voucherCodeService;
 
-    @RequestMapping(value="/generateVoucherCode", method = RequestMethod.POST)
-    public void generateVoucherCode(@RequestBody VoucherCodeForm form) throws ParseException {
-        voucherCodeService.generateVoucherCode(form);
+    @RequestMapping(value="/generateVoucherCodeForSpecialOffer", method = RequestMethod.POST)
+    public VoucherCodeForm generateVoucherCodeForSpecialOffer(@RequestBody VoucherCodeForm form) throws ParseException {
+        return voucherCodeService.generateVoucherCodeForSpecialOffer(form);
+    }
+
+    @RequestMapping(value="/generateAll", method = RequestMethod.POST)
+    public VoucherCodeForm generateAll(@RequestBody VoucherCodeForm form) throws ParseException {
+        return voucherCodeService.generateAll(form);
     }
 
     @RequestMapping(value="/getValidVoucherForRecipient", method = RequestMethod.POST)

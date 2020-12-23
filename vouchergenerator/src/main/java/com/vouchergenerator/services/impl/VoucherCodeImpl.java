@@ -16,10 +16,7 @@ import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service("voucherCodeService")
 @Transactional
@@ -34,41 +31,70 @@ public class VoucherCodeImpl implements VoucherCodeService {
     VoucherCodeRepo voucherCodeRepo;
 
     @Override
-    public void generateVoucherCode(VoucherCodeForm form) throws ParseException {
+    public VoucherCodeForm generateAll(VoucherCodeForm form) throws ParseException {
+        List<SpecialOffer> specialOffers = specialOfferRepo.findAll();
         List<Recipient> recipients = recipientRepo.findAll();
 
-        SpecialOffer specialOffer = specialOfferRepo.getOne(form.getSpecialOfferID());
-        for(Recipient r:recipients) {
-            if (specialOffer != null) {
-                VoucherCode existingVoucherCode = voucherCodeRepo.getVoucherCodeByRecipientEmailAndSpecialOfferID(r.getEmail(), form.getSpecialOfferID());
-                if(existingVoucherCode==null) {
-                    int voucherCodeLength = 8;
-                    char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
-                    StringBuilder sb = new StringBuilder(voucherCodeLength);
-                    Random random = new SecureRandom();
-                    for (int i = 0; i < voucherCodeLength; i++) {
-                        char c = chars[random.nextInt(chars.length)];
-                        sb.append(c);
+        List<VoucherCode> voucherCodeList = this.generateVoucherCode(specialOffers,recipients);
+        form.setSpecialOffers(specialOffers);
+        form.setGenerateSuccess(voucherCodeList!=null && voucherCodeList.size()>0);
+        return form;
+    }
+
+    @Override
+    public List<VoucherCode> generateVoucherCode(List<SpecialOffer> specialOffers, List<Recipient> recipients) throws ParseException {
+        List<VoucherCode> voucherCodeList = new ArrayList<>();
+        for(SpecialOffer specialOffer:specialOffers) {
+            for(Recipient recipient:recipients) {
+                if (specialOffer != null) {
+                    VoucherCode voucherCode = voucherCodeRepo.getVoucherCodeByRecipientEmailAndSpecialOfferID(recipient.getEmail(), specialOffer.getId());
+                    if(voucherCode==null) {
+                        int voucherCodeLength = 8;
+                        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+                        StringBuilder sb = new StringBuilder(voucherCodeLength);
+                        Random random = new SecureRandom();
+                        for (int i = 0; i < voucherCodeLength; i++) {
+                            char c = chars[random.nextInt(chars.length)];
+                            sb.append(c);
+                        }
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.MONTH, 3);
+                        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        Date expirationDate = calendar.getTime();
+                        expirationDate = formatter.parse(formatter.format(expirationDate));
+
+                        String voucherCodeString = sb.toString();
+                        voucherCode = new VoucherCode();
+                        voucherCode.setCode(voucherCodeString);
+                        voucherCode.setExpirationDate(expirationDate);
+                        voucherCode.setRedeemed(false);
+                        voucherCode.setRecipient(recipient);
+                        voucherCode.setSpecialOffer(specialOffer);
+
+                        voucherCodeRepo.save(voucherCode);
                     }
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.MONTH, 3);
-                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date expirationDate = calendar.getTime();
-                    expirationDate = formatter.parse(formatter.format(expirationDate));
-
-                    String voucherCodeString = sb.toString();
-                    VoucherCode voucherCode = new VoucherCode();
-                    voucherCode.setCode(voucherCodeString);
-                    voucherCode.setExpirationDate(expirationDate);
-                    voucherCode.setRedeemed(false);
-                    voucherCode.setRecipient(r);
-                    voucherCode.setSpecialOffer(specialOffer);
-
-                    voucherCodeRepo.save(voucherCode);
+                    voucherCodeList.add(voucherCode);
                 }
             }
         }
+        return voucherCodeList;
+    }
+
+    @Override
+    public VoucherCodeForm generateVoucherCodeForSpecialOffer(VoucherCodeForm form) throws ParseException {
+        List<Recipient> recipients = recipientRepo.findAll();
+        List<SpecialOffer> specialOffers = new ArrayList<>();
+
+        SpecialOffer specialOffer = specialOfferRepo.getOne(form.getSpecialOfferID());
+        specialOffers.add(specialOffer);
+        List<VoucherCode> voucherCodeList = this.generateVoucherCode(specialOffers,recipients);
+        Boolean generateSuccess = voucherCodeList!=null && voucherCodeList.size()>0;
+
+        form.setSpecialOffers(specialOffers);
+        form.setGenerateSuccess(generateSuccess);
+
+        return form;
     }
 
     @Override

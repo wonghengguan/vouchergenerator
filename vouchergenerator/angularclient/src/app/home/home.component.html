@@ -94,7 +94,7 @@
         <span class="display-block text-danger" style="font-size: 11px">{{voucherCodeFailMsg}}</span>
       </div>
 
-      <div *ngIf="!(validVoucherCodeList==null && expiredVoucherCodeList==null && redeemedVoucherCodeList==null)" class="col-6 mt-5">
+      <div *ngIf="!(validVoucherCodeList==null && expiredVoucherCodeList==null && redeemedVoucherCodeList==null) && !redeem" class="col-6 mt-5">
         <button class="btn btn-primary lighten-2 mb-0" style="margin-left: 1px;" type="button" (click)="useVoucherCode()">
           <a class="text-decoration-none text-white"><i class="fa fa-search"></i>Redeem</a></button>
       </div>
