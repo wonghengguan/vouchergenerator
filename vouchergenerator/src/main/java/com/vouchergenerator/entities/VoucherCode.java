@@ -6,16 +6,16 @@ import java.util.Date;
 @Entity
 @Table(name="voucherCodes")
 public class VoucherCode extends Base {
-    @Column(name="name")
+    @Column(name="code")
     private String code;
 
-    @Column(name="discountPercentage")
+    @Column(name="expirationDate")
     private Date expirationDate;
 
-    @Column(name="name")
-    private Boolean isUsed;
+    @Column(name="redeemed")
+    private Boolean redeemed;
 
-    @Column(name="discountPercentage")
+    @Column(name="usedDate")
     private Date usedDate;
 
     @JoinColumn(name = "recipientID")
@@ -42,12 +42,12 @@ public class VoucherCode extends Base {
         this.expirationDate = expirationDate;
     }
 
-    public Boolean getUsed() {
-        return isUsed;
+    public Boolean getRedeemed() {
+        return redeemed;
     }
 
-    public void setUsed(Boolean used) {
-        isUsed = used;
+    public void setRedeemed(Boolean used) {
+        redeemed = used;
     }
 
     public Date getUsedDate() {

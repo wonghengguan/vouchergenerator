@@ -11,10 +11,17 @@ import {Title} from "@angular/platform-browser";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  public recipientID:any;
+  public email:any;
   public recipient:any;
   public errormsg:any;
-  public voucherCodeList:any;
+  public validVoucherCodeList:any;
+  public expiredVoucherCodeList:any;
+  public redeemedVoucherCodeList:any;
+  public voucherCodeSuccessMsg:any;
+  public voucherCodeFailMsg:any;
+  public redeem:any;
+  public voucherCode:any;
+
 
 
   constructor(private titleService: Title,
@@ -24,17 +31,21 @@ export class HomeComponent implements OnInit {
               private recipientService: RecipientService) { }
 
   ngOnInit(): void {
+    this.redeem = false;
+    this.voucherCodeSuccessMsg = "";
     this.getRecipient();
-    this.getVoucherCodeList();
+    this.getValidVoucherForRecipient();
+    this.getExpiredVoucherForRecipient();
+    this.getRedeemedVoucherForRecipient();
   }
 
   getRecipient() {
-    this.recipientID = this.cookieService.get("recipientID");
+    this.email = this.cookieService.get("recipientEmail");
 
     let userForm = {
-      id:this.recipientID,
+      email:this.email,
     }
-    this.recipientService.getRecipient(userForm).subscribe( res => {
+    this.recipientService.getRecipientByEmail(userForm).subscribe(res => {
         if(res != null){
           this.recipient=res;
         } else {
@@ -44,36 +55,84 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  getVoucherCodeList() {
+  getValidVoucherForRecipient() {
     let voucherCodeForm = {
-      recipientID:this.recipientID
+      email:this.email
     }
-    this.voucherCodeService.getVoucherCodeByRecipientID(voucherCodeForm).subscribe(res=> {
+    this.voucherCodeService.getValidVoucherForRecipient(voucherCodeForm).subscribe(res=> {
         if(res != null) {
-          this.voucherCodeList=res;
+          this.validVoucherCodeList=res;
         } else {
-          this.errormsg = "Recipient does not have any voucher code."
+          this.errormsg = "Recipient does not have any voucher code. Please contact admin for more information."
         }
       }
     )
   }
 
-  useVoucherCode(voucherCodeID: any) {
+  getExpiredVoucherForRecipient() {
     let voucherCodeForm = {
-      id:voucherCodeID,
-      recipientID:this.recipientID
+      email:this.email
     }
-    this.voucherCodeService.getVoucherCodeByRecipientID(voucherCodeForm).subscribe(res=> {
+    this.voucherCodeService.getExpiredVoucherForRecipient(voucherCodeForm).subscribe(res=> {
         if(res != null) {
-          this.voucherCodeList=res;
+          this.expiredVoucherCodeList=res;
         } else {
-          this.errormsg = "Recipient does not have any voucher code."
+          this.errormsg = "Recipient does not have any voucher code. Please contact admin for more information."
         }
       }
     )
+  }
+
+  getRedeemedVoucherForRecipient() {
+    let voucherCodeForm = {
+      email:this.email
+    }
+    this.voucherCodeService.getRedeemedVoucherForRecipient(voucherCodeForm).subscribe(res=> {
+        if(res != null) {
+          this.redeemedVoucherCodeList=res;
+        } else {
+          this.errormsg = "Recipient does not have any voucher code. Please contact admin for more information."
+        }
+      }
+    )
+  }
+
+  useVoucherCode() {
+    this.redeem = true;
+    this.voucherCode="";
+    this.voucherCodeSuccessMsg="";
+    this.voucherCodeFailMsg="";
+  }
+
+  submitVoucherCode() {
+    console.log("code = "  +this.voucherCode)
+    console.log("email = " + this.email)
+    let voucherCodeForm = {
+      code:this.voucherCode,
+      email:this.email
+    }
+    this.voucherCodeService.useVoucherCode(voucherCodeForm).subscribe(res=> {
+        if(res != null) {
+          this.validVoucherCodeList=res.validVoucherCodeList;
+          this.redeemedVoucherCodeList=res.redeemedVoucherCodeList;
+          this.expiredVoucherCodeList=res.expiredVoucherCodeList;
+          if(res.voucherCodeExists){
+            this.voucherCodeSuccessMsg="Redeem success!";
+          } else {
+            this.voucherCodeFailMsg="Invalid voucher code!"
+          }
+        }
+      }
+    )
+    this.redeem = false;
   }
 
   viewSpecialOfferList() {
     this.router.navigate(['/specialOffers']);
+  }
+
+  logout() {
+    this.cookieService.delete("recipientID");
+    this.router.navigate(['']);
   }
 }

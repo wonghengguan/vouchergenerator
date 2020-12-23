@@ -14,11 +14,11 @@ public class RecipientController {
     RecipientService recipientService;
 
     @RequestMapping(value="/getRecipientByEmail", method = RequestMethod.POST)
-    public Long getRecipientByEmail(@RequestBody RecipientForm form) {
+    public Recipient getRecipientByEmail(@RequestBody RecipientForm form) {
         return recipientService.getRecipientByEmail(form.getEmail());
     }
 
-    @RequestMapping(value="/getRecipientByEmail", method = RequestMethod.POST)
+    @RequestMapping(value="/getRecipientByID", method = RequestMethod.POST)
     public Recipient getRecipientByID(@RequestBody RecipientForm form) {
         return recipientService.getRecipientByID(form.getId());
     }

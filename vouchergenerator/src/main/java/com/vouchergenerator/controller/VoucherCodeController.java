@@ -6,6 +6,7 @@ import com.vouchergenerator.services.VoucherCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -17,13 +18,35 @@ public class VoucherCodeController {
     VoucherCodeService voucherCodeService;
 
     @RequestMapping(value="/generateVoucherCode", method = RequestMethod.POST)
-    public void generateVoucherCode(@RequestBody VoucherCodeForm form) {
+    public void generateVoucherCode(@RequestBody VoucherCodeForm form) throws ParseException {
         voucherCodeService.generateVoucherCode(form);
     }
 
-    @RequestMapping(value="/getVoucherCodeListByRecipientID", method = RequestMethod.POST)
-    public List<VoucherCode> getVoucherCodeListByRecipientID(@RequestBody VoucherCodeForm form) {
-        List<VoucherCode> voucherCodeList = voucherCodeService.getVoucherCodeListByRecipientID(form.getRecipientID());
+    @RequestMapping(value="/getValidVoucherForRecipient", method = RequestMethod.POST)
+    public List<VoucherCode> getValidVoucherForRecipient(@RequestBody VoucherCodeForm form) throws ParseException {
+        List<VoucherCode> voucherCodeList = voucherCodeService.getValidVoucherCodeForRecipient(form.getEmail());
+
+        if(voucherCodeList!=null && voucherCodeList.size()>0) {
+            return voucherCodeList;
+        }
+
+        return null;
+    }
+
+    @RequestMapping(value="/getExpiredVoucherForRecipient", method = RequestMethod.POST)
+    public List<VoucherCode> getExpiredVoucherForRecipient(@RequestBody VoucherCodeForm form) throws ParseException {
+        List<VoucherCode> voucherCodeList = voucherCodeService.getExpiredVoucherForRecipient(form.getEmail());
+
+        if(voucherCodeList!=null && voucherCodeList.size()>0) {
+            return voucherCodeList;
+        }
+
+        return null;
+    }
+
+    @RequestMapping(value="/getRedeemedVoucherForRecipient", method = RequestMethod.POST)
+    public List<VoucherCode> getRedeemedVoucherForRecipient(@RequestBody VoucherCodeForm form) {
+        List<VoucherCode> voucherCodeList = voucherCodeService.getRedeemedVoucherForRecipient(form.getEmail());
 
         if(voucherCodeList!=null && voucherCodeList.size()>0) {
             return voucherCodeList;
@@ -44,13 +67,7 @@ public class VoucherCodeController {
     }
 
     @RequestMapping(value="/useVoucherCode", method = RequestMethod.POST)
-    public List<VoucherCode> useVoucherCode(@RequestBody VoucherCodeForm form) {
-        List<VoucherCode> voucherCodeList = voucherCodeService.useVoucherCode(form);
-
-        if(voucherCodeList!=null && voucherCodeList.size()>0) {
-            return voucherCodeList;
-        }
-
-        return null;
+    public VoucherCodeForm useVoucherCode(@RequestBody VoucherCodeForm form) throws ParseException {
+        return voucherCodeService.useVoucherCode(form);
     }
 }

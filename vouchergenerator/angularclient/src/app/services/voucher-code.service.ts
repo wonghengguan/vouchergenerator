@@ -10,12 +10,20 @@ export class VoucherCodeService {
   constructor(private router: Router,
               private apiService: ApiRequestService) { }
 
-  getVoucherCodeByRecipientID(body: Object) {
-    return this.apiService.post("api/voucherCode/getVoucherCodeListByRecipientID", body);
+  getValidVoucherForRecipient(body: Object) {
+    return this.apiService.post("api/voucherCode/getValidVoucherForRecipient", body);
+  }
+
+  getExpiredVoucherForRecipient(body: Object) {
+    return this.apiService.post("api/voucherCode/getExpiredVoucherForRecipient", body);
+  }
+
+  getRedeemedVoucherForRecipient(body: Object) {
+    return this.apiService.post("api/voucherCode/getRedeemedVoucherForRecipient", body);
   }
 
   useVoucherCode(body: Object) {
-    return this.apiService.post("api/voucherCode/getVoucherCodeListByRecipientID", body);
+    return this.apiService.post("api/voucherCode/useVoucherCode", body);
   }
 
   generateVoucherCode(body: Object) {

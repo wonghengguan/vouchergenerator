@@ -15,12 +15,10 @@ public class RecipientImpl implements RecipientService {
     RecipientRepo recipientRepo;
 
     @Override
-    public Long getRecipientByEmail(String email) {
+    public Recipient getRecipientByEmail(String email) {
         Recipient recipient = recipientRepo.getRecipientByEmail(email);
-        if(recipient!=null) {
-            return recipient.getId();
-        }
-        return null;
+
+        return recipient;
     }
 
     @Override
@@ -28,6 +26,7 @@ public class RecipientImpl implements RecipientService {
         Recipient recipient = recipientRepo.getRecipientByEmail(form.getEmail());
         Boolean exists = false;
         if(recipient==null) {
+            recipient = new Recipient();
             recipient.setName(form.getName());
             recipient.setEmail(form.getEmail());
             recipientRepo.save(recipient);

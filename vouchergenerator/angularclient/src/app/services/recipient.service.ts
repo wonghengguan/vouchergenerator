@@ -14,11 +14,16 @@ export class RecipientService {
     return this.apiService.post("api/recipient/getRecipientByEmail", body);
   }
 
-  getRecipient(body: Object) {
+  getRecipientByID(body: Object) {
+    return this.apiService.post("api/recipient/getRecipientByID", body);
+  }
+
+  register(body: Object) {
+    return this.apiService.post("api/recipient/newRecipient", body);
+  }
+
+  getRecipientByEmail(body: Object) {
     return this.apiService.post("api/recipient/getRecipientByEmail", body);
   }
 
-  logout() {
-    this.router.navigate(['/login']);
-  }
 }

@@ -11,12 +11,14 @@ import {VoucherCodeService} from "../services/voucher-code.service";
   styleUrls: ['./special-offer.component.css']
 })
 export class SpecialOfferComponent implements OnInit {
-  public recipientID:any;
+  public recipientEmail:any;
   public recipient:any;
   public specialOfferList:any;
   public name:any;
   public discountPercentage:any;
   public errormsg:any;
+  public isNew:any;
+  public canCreate:any;
 
   constructor(private titleService: Title,
               private cookieService: CookieService,
@@ -25,8 +27,10 @@ export class SpecialOfferComponent implements OnInit {
               private voucherCodeService: VoucherCodeService) { }
 
   ngOnInit(): void {
-    this.recipientID = this.cookieService.get("recipientID");
+    this.recipientEmail = this.cookieService.get("recipientEmail");
     this.getSpecialOfferList();
+    this.isNew = false;
+    this.canCreate = this.recipientEmail=="admin";
   }
 
   getSpecialOfferList() {
@@ -41,6 +45,10 @@ export class SpecialOfferComponent implements OnInit {
     )
   }
 
+  new() {
+    this.isNew = true;
+  }
+
   newSpecialOffer() {
     let form = {
       name:this.name,
@@ -52,12 +60,14 @@ export class SpecialOfferComponent implements OnInit {
         }
       }
     )
+    this.isNew = false;
   }
 
   generateVoucherCode(specialOfferID: any) {
+
     let form ={
       specialOfferID:specialOfferID,
-      recipientID:this.recipientID
+      email:this.recipientEmail
     }
     this.voucherCodeService.generateVoucherCode(form).subscribe( res=> {
           if(res!=null) {
@@ -69,7 +79,8 @@ export class SpecialOfferComponent implements OnInit {
     )
   }
 
-  backToHome() {
-    this.router.navigate(['/home']);
+  logout() {
+    this.cookieService.delete("recipientID");
+    this.router.navigate(['']);
   }
 }

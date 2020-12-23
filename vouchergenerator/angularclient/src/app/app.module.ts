@@ -6,6 +6,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { SpecialOfferComponent } from './special-offer/special-offer.component';
 import { LoginComponent } from './login/login.component';
+import {FormsModule} from "@angular/forms";
+import {RecipientService} from "./services/recipient.service";
+import {AppConfig} from "./app-config";
+import {ApiRequestService} from "./services/api-request.service";
+import {SpecialOfferService} from "./services/special-offer.service";
+import {VoucherCodeService} from "./services/voucher-code.service";
+import {HttpClientModule} from "@angular/common/http";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -16,9 +24,12 @@ import { LoginComponent } from './login/login.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    NgbModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [RecipientService,AppConfig,ApiRequestService,SpecialOfferService,VoucherCodeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

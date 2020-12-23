@@ -1,9 +1,19 @@
 package com.vouchergenerator.form;
 
+import com.vouchergenerator.entities.VoucherCode;
+
+import java.util.List;
+
 public class VoucherCodeForm {
     private Long id;
     private Long recipientID;
+    private String email;
     private Long specialOfferID;
+    private String code;
+    private List<VoucherCode> validVoucherCodeList;
+    private List<VoucherCode> redeemedVoucherCodeList;
+    private List<VoucherCode> expiredVoucherCodeList;
+    private Boolean voucherCodeExists;
 
     public Long getId() {
         return id;
@@ -27,5 +37,53 @@ public class VoucherCodeForm {
 
     public void setSpecialOfferID(Long specialOfferID) {
         this.specialOfferID = specialOfferID;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public List<VoucherCode> getValidVoucherCodeList() {
+        return validVoucherCodeList;
+    }
+
+    public void setValidVoucherCodeList(List<VoucherCode> validVoucherCodeList) {
+        this.validVoucherCodeList = validVoucherCodeList;
+    }
+
+    public Boolean getVoucherCodeExists() {
+        return voucherCodeExists;
+    }
+
+    public void setVoucherCodeExists(Boolean voucherCodeExists) {
+        this.voucherCodeExists = voucherCodeExists;
+    }
+
+    public List<VoucherCode> getRedeemedVoucherCodeList() {
+        return redeemedVoucherCodeList;
+    }
+
+    public void setRedeemedVoucherCodeList(List<VoucherCode> redeemedVoucherCodeList) {
+        this.redeemedVoucherCodeList = redeemedVoucherCodeList;
+    }
+
+    public List<VoucherCode> getExpiredVoucherCodeList() {
+        return expiredVoucherCodeList;
+    }
+
+    public void setExpiredVoucherCodeList(List<VoucherCode> expiredVoucherCodeList) {
+        this.expiredVoucherCodeList = expiredVoucherCodeList;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
