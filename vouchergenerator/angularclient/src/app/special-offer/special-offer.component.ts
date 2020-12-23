@@ -50,9 +50,12 @@ export class SpecialOfferComponent implements OnInit {
 
   new() {
     this.isNew = true;
+    this.name = "";
+    this.discountPercentage="";
   }
 
   newSpecialOffer() {
+
     let form = {
       name:this.name,
       discountPercentage:this.discountPercentage
@@ -67,6 +70,7 @@ export class SpecialOfferComponent implements OnInit {
   }
 
   generateAll() {
+    this.voucherGeneratedMsg="";
     let form ={
     }
     this.voucherCodeService.generateAll(form).subscribe( res=> {
@@ -87,7 +91,7 @@ export class SpecialOfferComponent implements OnInit {
   }
 
   generateVoucherCode(specialOfferID: any) {
-
+    this.voucherGeneratedMsg="";
     let form ={
       specialOfferID:specialOfferID,
       email:this.recipientEmail
