@@ -33,7 +33,10 @@ export class SpecialOfferComponent implements OnInit {
     this.getSpecialOfferList();
     this.isNew = false;
     this.canCreate = this.recipientEmail=="admin";
-    this.voucherGeneratedMsg=""
+    this.name = "";
+    this.discountPercentage="";
+    this.voucherGeneratedMsg="";
+    this.errormsg=""
   }
 
   getSpecialOfferList() {
@@ -52,6 +55,8 @@ export class SpecialOfferComponent implements OnInit {
     this.isNew = true;
     this.name = "";
     this.discountPercentage="";
+    this.voucherGeneratedMsg="";
+    this.errormsg="";
   }
 
   newSpecialOffer() {
