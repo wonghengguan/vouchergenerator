@@ -43,14 +43,15 @@ public class VoucherCodeImpl implements VoucherCodeService {
 
     @Override
     public List<VoucherCode> generateVoucherCode(List<SpecialOffer> specialOffers, List<Recipient> recipients) throws ParseException {
+        int voucherCodeLength = 8;
+        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
+
         List<VoucherCode> voucherCodeList = new ArrayList<>();
         for(SpecialOffer specialOffer:specialOffers) {
             for(Recipient recipient:recipients) {
                 if (specialOffer != null) {
                     VoucherCode voucherCode = voucherCodeRepo.getVoucherCodeByRecipientEmailAndSpecialOfferID(recipient.getEmail(), specialOffer.getId());
                     if(voucherCode==null) {
-                        int voucherCodeLength = 8;
-                        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
                         StringBuilder sb = new StringBuilder(voucherCodeLength);
                         Random random = new SecureRandom();
                         for (int i = 0; i < voucherCodeLength; i++) {

@@ -5,12 +5,12 @@
         <h4 class="card-title">Special offer list</h4>
       </div>
       <div *ngIf="isNew" class="col-12 mt-4">
-        <span class="display-block mazda-font-black" style="font-size: 13px">Name</span>
+        <span style="font-size: 13px">Name</span>
         <input type="text" class="form-control" name="name" id="name" placeholder="Please enter special offer name" [(ngModel)]="name" required>
       </div>
 
       <div *ngIf="isNew" class="col-12 mt-4">
-        <span class="display-block mazda-font-black" style="font-size: 13px">Discount</span>
+        <span style="font-size: 13px">Discount</span>
         <input type="number" class="form-control" name="discountPercentage" id="discountPercentage" placeholder="Please enter discount" [(ngModel)]="discountPercentage" required>
       </div>
       <div *ngIf="!isNew" class="card-content">

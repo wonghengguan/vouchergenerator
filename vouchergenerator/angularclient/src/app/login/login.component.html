@@ -6,16 +6,16 @@
       <div class="col-12 d-flex align-items-center justify-content-center">
         <div class="row">
           <div class="col-12 text-center pl-0 pr-0">
-            <p class="mazda-font-grey" style="font-size: 18px"><b>Voucher generator</b></p>
+            <p style="font-size: 18px"><b>Voucher generator</b></p>
           </div>
 
           <div *ngIf="isRegister" class="col-12 mt-4">
-            <span class="display-block mazda-font-black" style="font-size: 13px">Name</span>
+            <span style="font-size: 13px">Name</span>
             <input type="text" class="form-control" name="name" id="name" placeholder="Please enter name" [(ngModel)]="name" required>
           </div>
 
           <div class="col-12 mt-4">
-            <span class="display-block mazda-font-black" style="font-size: 13px">Email</span>
+            <span style="font-size: 13px">Email</span>
             <input type="text" class="form-control" name="email" id="email" placeholder="Please enter email" [(ngModel)]="email" required>
           </div>
 
@@ -24,15 +24,15 @@
           </div>
 
           <div *ngIf="!isRegister" class="col-12 mt-5">
-            <button type="submit" class="btn mazda-btn-primary btn-block btn-raised" (click)="onSubmit()"><b>Login</b></button>
+            <button type="submit" class="btn btn-primary lighten-2 mb-0" (click)="onSubmit()"><b>Login</b></button>
           </div>
 
           <div *ngIf="!isRegister" class="col-12 mt-5">
-            <button type="submit" class="btn mazda-btn-primary btn-block btn-raised" (click)="register()"><b>Register new account</b></button>
+            <button type="submit" class="btn btn-primary lighten-2 mb-0" (click)="register()"><b>Register new account</b></button>
           </div>
 
           <div *ngIf="isRegister" class="col-12 mt-5">
-            <button type="submit" class="btn mazda-btn-primary btn-block btn-raised" (click)="submitRegistration()"><b>Submit registration</b></button>
+            <button type="submit" class="btn btn-primary lighten-2 mb-0" (click)="submitRegistration()"><b>Submit registration</b></button>
           </div>
 
           <div class="col-12 mt-1" *ngIf="registrationErrorMsg">
