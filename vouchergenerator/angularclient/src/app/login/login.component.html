@@ -1,0 +1,52 @@
+<!--Login Page Starts-->
+<section id="login">
+  <div class="container-fluid">
+    <!--<div class="width-400">-->
+    <div class="row" style="height: 95vh !important;">
+      <div class="col-12 d-flex align-items-center justify-content-center">
+        <div class="row">
+          <div class="col-12 text-center pl-0 pr-0">
+            <p style="font-size: 18px"><b>Voucher generator</b></p>
+          </div>
+
+          <div *ngIf="isRegister" class="col-12 mt-4">
+            <span style="font-size: 13px">Name</span>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Please enter name" [(ngModel)]="name" required>
+          </div>
+
+          <div class="col-12 mt-4">
+            <span style="font-size: 13px">Email</span>
+            <input type="text" class="form-control" name="email" id="email" placeholder="Please enter email" [(ngModel)]="email" required>
+          </div>
+
+          <div class="col-12 mt-1" *ngIf="errorMsg">
+            <span class="display-block text-danger" style="font-size: 11px">{{errorMsg}}</span>
+          </div>
+
+          <div *ngIf="!isRegister" class="col-12 mt-5">
+            <button type="submit" class="btn btn-primary lighten-2 mb-0" (click)="onSubmit()"><b>Login</b></button>
+          </div>
+
+          <div *ngIf="!isRegister" class="col-12 mt-5">
+            <button type="submit" class="btn btn-primary lighten-2 mb-0" (click)="register()"><b>Register new account</b></button>
+          </div>
+
+          <div *ngIf="isRegister" class="col-12 mt-5">
+            <button type="submit" class="btn btn-primary lighten-2 mb-0" (click)="submitRegistration()"><b>Submit registration</b></button>
+          </div>
+
+          <div class="col-12 mt-1" *ngIf="registrationErrorMsg">
+            <span class="display-block text-danger" style="font-size: 11px">{{registrationErrorMsg}}</span>
+          </div>
+
+          <div class="col-12 mt-1" *ngIf="successMsg">
+            <span class="display-block text-success" style="font-size: 11px">{{successMsg}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--</div>-->
+</section>
+<!--Login Page Ends-->
+
